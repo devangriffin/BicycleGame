@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BicycleGame", "BicycleGame\BicycleGame.csproj", "{6433C815-3F9F-4D4A-97A6-3A695C1005F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BicycleGame", "BicycleGame\BicycleGame.csproj", "{6433C815-3F9F-4D4A-97A6-3A695C1005F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContentPipeline", "ContentPipeline\ContentPipeline.csproj", "{C684D396-DC99-42A0-BABC-A195B57F521E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TilemapPipeline", "ContentPipeline\TilemapPipeline.csproj", "{C684D396-DC99-42A0-BABC-A195B57F521E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

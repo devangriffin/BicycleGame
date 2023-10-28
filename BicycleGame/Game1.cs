@@ -1,6 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Text.Json;
+using System.IO;
+using System.Diagnostics;
 
 namespace BicycleGame
 {
@@ -8,6 +11,10 @@ namespace BicycleGame
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+
+        private Tilemap tilemap;
+
+        private Biker biker;
 
         public Game1()
         {
@@ -18,7 +25,12 @@ namespace BicycleGame
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            biker = new Biker();
+
+            if (File.Exists("SaveState.Txt"))
+            {
+                biker.position = InputData();
+            }
 
             base.Initialize();
         }
@@ -27,16 +39,29 @@ namespace BicycleGame
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            tilemap = Content.Load<Tilemap>("tilemaptest");
+            biker.LoadContent(Content);
         }
 
         protected override void Update(GameTime gameTime)
         {
+            // When Escape is pressed, the position is saved
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                // Saves the position of the biker
+                using (StreamWriter sw = new StreamWriter("SaveState.txt"))
+                {
+                    string saveState1 = JsonSerializer.Serialize(biker.position.X);
+                    string saveState2 = JsonSerializer.Serialize(biker.position.Y);
+                    sw.WriteLine(saveState1);
+                    sw.WriteLine(saveState2);
+                    //Debug.WriteLine(saveState1);
+                    //Debug.WriteLine(saveState2);
+                }
                 Exit();
+            }
 
-            // TODO: Add your update logic here
-
+            biker.Update();
             base.Update(gameTime);
         }
 
@@ -44,9 +69,26 @@ namespace BicycleGame
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            _spriteBatch.Begin();
+            tilemap.Draw(gameTime, _spriteBatch);
+            biker.Draw(_spriteBatch);
+            _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        private Vector2 InputData()
+        {
+            Vector2 tempVec = new Vector2();
+            using (StreamReader sr = new StreamReader("SaveState.txt"))
+            {
+                tempVec.X = float.Parse(sr.ReadLine());
+                tempVec.Y = float.Parse(sr.ReadLine());
+                Debug.WriteLine(tempVec.X);
+                Debug.WriteLine(tempVec.Y);
+            }
+
+            return tempVec;
         }
     }
 }
